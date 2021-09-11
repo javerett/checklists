@@ -1,0 +1,104 @@
+Create login page
+	Use Google OAuth query
+	Check membership in CTS org
+
+Create user frontend page
+	Use cookie to remember selected widgets/settings
+	Widget types
+		Show requests assigned to user
+		Show requests w/ other filters
+		Metrics/info for projects
+			Nail down what kinds of metrics we want
+
+Create new request page
+	First ask for location name, if it doesn't exist
+		Get location info in drop down section
+	Get request information from user
+		File upload section
+		Special section for DCR to ensure it is required
+	Get checklist template/group list from user
+		Display as two layer hierarchical checklist?
+	Maybe get custom checklists too, or push that to the request page only
+
+LocationWidget
+	Show location info
+	Show all requests related to that location
+		Use grid for this
+		Link to requests
+
+RequestWidget
+	Show request info
+	Link to DCR/SOW/etc
+		General files list
+	Show grid of checklists in request
+	Add checklist or template or template group
+	
+ChecklistWidget
+	Show list of checklist items
+	Checklist items have enumerated type and data
+		Use JSON decoder, combine these to just use one JSON field
+		Add validation to IHP side to ensure updates are valid
+		Add validation to Elm side to ensure updates are valid
+
+Location
+	Name : Text
+	-- JobNum : Text 
+	-- SiteTrackerNum : Text
+	SquareFootage : Int
+	BuildingType : BuildingTypeEnum
+	RegionCode : Int
+
+Request
+	Location : LocationID
+
+	JobNum : Text
+	SiteTrackerNum : Text
+
+	SubmissionTime : DateTime
+	QuoteGroupDueTime : Maybe DateTime
+	FinalDueTime : DateTime
+	CompletionTime : Maybe DateTime
+	CompletionNotes : Maybe Text
+
+	Requester : UserID
+	Description : Text
+	Notes : Text
+
+	DCR : File
+	DCRData : DCRData
+
+	SOWNotes : {
+		SOWCallDate : Maybe DateTime
+		SOWReview : Maybe Bool
+		SOW : File
+	}
+
+Assignnment
+	-- TODO: Decide if we want assignments per request or per checklist
+	-- Request : RequestID
+	Checklist : ChecklistID
+	Assignee : UserID
+	
+
+Read DCR XLSX file
+	xlsx library needs testing
+	If that works, extract data with it, otherwise use CSV
+
+Location contains general info like address
+Location contains many buildings
+Buildings have a name and area
+
+Requests have a DCR and similar info
+Requests relate to at least one building
+Requests have a set of general checklists and a set of checklsits for each building
+
+Checklist groups have a name
+Checklists have a name and index
+There are many checklists in a checklist group
+
+Checklist items have a checklist, question, answer type, and answer data
+There are many checklist items in a checklist
+
+Checklist template groups have a name
+Checklist templates have a name and an index
+Checklist template items have a checklist template, question, and answer type
